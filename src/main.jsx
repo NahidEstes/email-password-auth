@@ -6,6 +6,9 @@ import Main from "./components/Main";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import PracticeHome from "./components/practice/PracticeHome";
+import LoginP from "./components/practice/LoginP";
+import RegisterP from "./components/practice/RegisterP";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +26,18 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/practice",
+        element: <PracticeHome />,
+      },
+      {
+        path: "practice-login",
+        element: <LoginP />,
+      },
+      {
+        path: "practice-register",
+        element: <RegisterP />,
       },
     ],
   },

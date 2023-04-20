@@ -1,49 +1,36 @@
-import React from "react";
-import { useState } from "react";
-import {
-  getAuth,
-  sendEmailVerification,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import app from "../firebase/firebase.config";
+import React, { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import app from "../../firebase/firebase.config";
 
 const auth = getAuth(app);
 
-const Login = () => {
-  const [success, setSuccess] = useState("");
+const LoginP = () => {
   const [error, setError] = useState("");
+
   const handleLogin = (e) => {
     e.preventDefault();
+
+    //email and password value
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     console.log(email, password);
-    setSuccess("");
-    setError("");
 
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const loggedUser = result.user;
         console.log(loggedUser);
-        setSuccess("signed in successfully");
-        sendVerificationEmail(user);
       })
       .catch((error) => {
-        console.log(error);
-        setError("login failed");
+        setError(error.message);
       });
-  };
-
-  const sendVerificationEmail = (user) => {
-    sendEmailVerification(user).then((result) => {
-      console.log(result);
-    });
-    alert("please verify your email");
   };
 
   return (
     <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-md shadow-md">
-      <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
+      <h2 className="text-2xl font-semibold text-center mb-6">
+        Practice Login
+      </h2>
 
       {/* ----- Form ----- */}
       <form onSubmit={handleLogin}>
@@ -106,11 +93,10 @@ const Login = () => {
             Forgot Password?
           </a>
         </div>
+        <p>{error}</p>
       </form>
-      <p>{success}</p>
-      <p>{error}</p>
     </div>
   );
 };
 
-export default Login;
+export default LoginP;
