@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useRef, useState } from "react";
+import {
+  getAuth,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import app from "../../firebase/firebase.config";
 
 const auth = getAuth(app);
 
 const LoginP = () => {
   const [error, setError] = useState("");
+  const emailRef = useRef();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -26,6 +31,20 @@ const LoginP = () => {
       });
   };
 
+  // reset password
+  const handleResetPassword = (e) => {
+    const email = emailRef.current.value;
+    if (!email) {
+      alert("please provide a email address");
+      return;
+    }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("please check your email");
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-md shadow-md">
       <h2 className="text-2xl font-semibold text-center mb-6">
@@ -39,14 +58,15 @@ const LoginP = () => {
             className="block text-gray-700 font-bold mb-2"
             htmlFor="username"
           >
-            Username
+            Email
           </label>
           <input
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
+            id="email"
             name="email"
-            type="text"
-            placeholder="Enter your username"
+            type="email"
+            placeholder="Enter your email"
+            ref={emailRef}
             required
           />
         </div>
@@ -86,12 +106,13 @@ const LoginP = () => {
           >
             Login
           </button>
-          <a
+          <button
+            onClick={handleResetPassword}
             className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
             href="#"
           >
             Forgot Password?
-          </a>
+          </button>
         </div>
         <p>{error}</p>
       </form>
