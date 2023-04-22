@@ -42,7 +42,9 @@ const LoginP = () => {
       .then(() => {
         alert("please check your email");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   return (
